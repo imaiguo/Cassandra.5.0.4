@@ -1,0 +1,35 @@
+# 在不同宿主机器启动集群
+
+services:
+  cassandra01:
+    image: cassandra:5.0.4
+    container_name: somecassandra
+    hostname: somecassandra
+    environment:
+      TZ: 'Asia/Shanghai'
+      LANG: 'C.UTF-8'
+      # 假定 cassandra01的ip 是192.168.2.200
+      CASSANDRA_BROADCAST_ADDRESS: 192.168.2.200
+    ports:
+      - "7000:7000"
+    volumes:
+      - /etc/timezone:/etc/timezone
+      - /etc/localtime:/etc/localtime     
+      - ./data01:/var/lib/cassandra
+
+  cassandra02:
+    image: cassandra:5.0.4
+    container_name: somecassandra
+    hostname: somecassandra
+    environment:
+      TZ: 'Asia/Shanghai'
+      LANG: 'C.UTF-8'
+      # 假定 cassandra02的ip 是192.168.2.201
+      CASSANDRA_BROADCAST_ADDRESS: 192.168.2.201
+      CASSANDRA_SEEDS: 192.168.2.200
+    ports:
+      - "7000:7000"
+    volumes:
+      - /etc/timezone:/etc/timezone
+      - /etc/localtime:/etc/localtime     
+      - ./data02:/var/lib/cassandra

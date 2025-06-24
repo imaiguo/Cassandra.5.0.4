@@ -1,0 +1,24 @@
+services:
+  cassandraserver:
+    image: cassandra:5.0.4
+    container_name: onecassandra
+    hostname: onecassandra
+    # restart: always
+    environment:
+      TZ: 'Asia/Shanghai'
+      LANG: 'C.UTF-8'
+    ports:
+      - "7000:7000"
+      - "7001:7001"
+      - "7199:7199"
+      - "9042:9042"
+      - "9160:9160"
+    volumes:
+      - /etc/timezone:/etc/timezone
+      - /etc/localtime:/etc/localtime     
+      - ./data:/var/lib/cassandra
+    networks:
+      - cassandranet
+networks:
+  cassandranet:
+    driver: bridge

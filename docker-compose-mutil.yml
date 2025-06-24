@@ -1,0 +1,37 @@
+# 在同一台机器不同容器 启动集群
+services:
+  cassandra01:
+    image: cassandra:5.0.4
+    container_name: cassandra01
+    hostname: cassandra01
+    # restart: always
+    environment:
+      TZ: 'Asia/Shanghai'
+      LANG: 'C.UTF-8'
+    # ports:
+    #   - "7000:7000"
+    volumes:
+      - /etc/timezone:/etc/timezone
+      - /etc/localtime:/etc/localtime     
+      - ./data01:/var/lib/cassandra
+    networks:
+      - onecassandra
+  cassandra02:
+    image: cassandra:5.0.4
+    container_name: cassandra02
+    hostname: cassandra02
+    # restart: always
+    environment:
+      TZ: 'Asia/Shanghai'
+      LANG: 'C.UTF-8'
+      CASSANDRA_SEEDS: cassandra01
+    # ports:
+    #   - "7000:7000"
+    volumes:
+      - /etc/timezone:/etc/timezone
+      - /etc/localtime:/etc/localtime     
+      - ./data02:/var/lib/cassandra
+    networks:
+      - onecassandra
+networks:
+  onecassandra:
